@@ -1,0 +1,12 @@
+.DS_Store
+build
+dist
+target
+
+;idea
+.idea
+*.iml
+
+;netbeans
+nb-configuration.xml
+nbactions*
