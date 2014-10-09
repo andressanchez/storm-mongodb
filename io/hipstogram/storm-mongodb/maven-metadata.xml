@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>io.hipstogram</groupId>
+  <artifactId>storm-mongodb</artifactId>
+  <versioning>
+    <versions>
+      <version>0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20141009095039</lastUpdated>
+  </versioning>
+</metadata>
