@@ -17,6 +17,7 @@ package io.hipstogram.trident.mongodb;
 
 import com.mongodb.BasicDBObject;
 import io.hipstogram.trident.mongodb.mappers.MongoDBRowMapper;
+import io.hipstogram.trident.mongodb.operation.CRUDOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.trident.operation.TridentCollector;
@@ -64,8 +65,8 @@ public class MongoDBStateUpdater<K, V> implements StateUpdater<MongoDBState>
     @Override
     public void updateState(MongoDBState state, List<TridentTuple> tuples, TridentCollector collector) {
         for (TridentTuple tuple : tuples) {
-            BasicDBObject statement = this.mapper.map(tuple);
-            state.addStatement(statement);
+            CRUDOperation operation = this.mapper.map(tuple);
+            state.addOperation(operation);
         }
     }
 }

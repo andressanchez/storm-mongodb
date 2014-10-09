@@ -20,6 +20,8 @@ import backtype.storm.metric.api.CountMetric;
 import backtype.storm.task.IMetricsContext;
 import com.mongodb.*;
 import io.hipstogram.trident.mongodb.mappers.MongoDBRowMapper;
+import io.hipstogram.trident.mongodb.operation.CRUDOperation;
+import io.hipstogram.trident.mongodb.operation.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.trident.state.OpaqueValue;
@@ -166,8 +168,9 @@ public class MongoDBMapState<T> implements IBackingMap<T>
             List<T> values = new ArrayList<T>();
 
             for (List<Object> rowKey : keys) {
-                BasicDBObject statement = mapper.retrieve(rowKey);
-                DBCursor results = coll.find(statement);
+                Query operation = mapper.retrieve(rowKey);
+
+                DBCursor results = coll.find(operation.getQuery(), operation.getProjection());
 
                 Iterator<DBObject> docIter = results.iterator();
                 DBObject doc;
@@ -186,6 +189,7 @@ public class MongoDBMapState<T> implements IBackingMap<T>
             LOG.debug("Retrieving the following keys: {} with values: {}", keys, values);
             return values;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalStateException("Impossible to reach this code");
         }
     }
@@ -200,8 +204,8 @@ public class MongoDBMapState<T> implements IBackingMap<T>
             for (int i = 0; i < keys.size(); i++) {
                 List<Object> key = keys.get(i);
                 T val = values.get(i);
-                BasicDBObject statement = mapper.map(key, val);
-                builder.insert(statement);
+                CRUDOperation operation = mapper.map(key, val);
+                operation.addToBulkOperation(builder);
             }
 
             builder.execute();

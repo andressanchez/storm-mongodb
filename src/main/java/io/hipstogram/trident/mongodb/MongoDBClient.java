@@ -86,7 +86,7 @@ public class MongoDBClient
      * @return A MongoDB client
      */
     private MongoClient getClient() {
-        if (client != null) {
+        if (client == null) {
             try {
                 List<ServerAddress> addresses = new LinkedList<ServerAddress>();
                 for (String host : hosts) addresses.add(new ServerAddress(host));

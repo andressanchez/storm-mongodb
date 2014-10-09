@@ -13,24 +13,31 @@
  *  limitations under the License.
  */
 
-package io.hipstogram.trident.mongodb.mappers;
+package io.hipstogram.trident.mongodb.operation;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import io.hipstogram.trident.mongodb.operation.CRUDOperation;
-import io.hipstogram.trident.mongodb.operation.Query;
-import storm.trident.tuple.TridentTuple;
+import com.mongodb.BulkWriteOperation;
 
 /**
- * MongoDB Row Mapper
- * @param <K> Key type
- * @param <V> Value type
+ * Insert Operation
  * @author Andrés Sánchez
  */
-public interface MongoDBRowMapper <K, V>
+public class Insert extends CRUDOperation
 {
-    public CRUDOperation map(K key, V value);
-    public CRUDOperation map(TridentTuple tuple);
-    public Query retrieve(K key);
-    public V getValue(DBObject doc);
+    // Insert statement
+    private BasicDBObject dbObject;
+
+    /**
+     * Create a new insert operation
+     * @param dbObject Insert statement
+     */
+    public Insert(BasicDBObject dbObject) {
+        super(Type.INSERT);
+        this.dbObject = dbObject;
+    }
+
+    @Override
+    public void addToBulkOperation(BulkWriteOperation bulk) {
+        bulk.insert(dbObject);
+    }
 }

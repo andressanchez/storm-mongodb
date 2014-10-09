@@ -16,6 +16,7 @@
 package io.hipstogram.trident.mongodb;
 
 import com.mongodb.*;
+import io.hipstogram.trident.mongodb.operation.CRUDOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.trident.state.State;
@@ -41,8 +42,8 @@ public class MongoDBState implements State
     // The actual batch size
     private int maxBatchSize;
 
-    // List with a MongoDB statements
-    List<BasicDBObject> statements = new ArrayList<BasicDBObject>();
+    // List with a MongoDB operations
+    List<CRUDOperation> operations = new ArrayList<CRUDOperation>();
 
     /**
      * Create a new MongoDB State
@@ -68,11 +69,11 @@ public class MongoDBState implements State
     }
 
     /**
-     * Add a new statement to the statement list
-     * @param statement A statement
+     * Add a new operation to the operation list
+     * @param operation A CRUD operation
      */
-    public void addStatement(BasicDBObject statement) {
-        this.statements.add(statement);
+    public void addOperation(CRUDOperation operation) {
+        this.operations.add(operation);
     }
 
     /**
@@ -95,8 +96,8 @@ public class MongoDBState implements State
         BulkWriteOperation builder = coll.initializeOrderedBulkOperation();
 
         int i = 0;
-        for(BasicDBObject statement : this.statements) {
-            builder.insert(statement);
+        for(CRUDOperation operation : this.operations) {
+            operation.addToBulkOperation(builder);
             i++;
             if(i >= this.maxBatchSize) {
                 builder.execute();
