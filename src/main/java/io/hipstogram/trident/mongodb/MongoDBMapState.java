@@ -190,7 +190,8 @@ public class MongoDBMapState<T> implements IBackingMap<T>
             return values;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalStateException("Impossible to reach this code");
+            //throw new IllegalStateException("Impossible to reach this code");
+            return new ArrayList<T>();
         }
     }
 

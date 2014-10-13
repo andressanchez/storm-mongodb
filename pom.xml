@@ -16,7 +16,7 @@
         <developer>
             <id>andressanchez</id>
             <name>Andrés Sánchez</name>
-            <email>andres.sanpas@outlook.com</email>
+            <email>aaannndddrrreeesss@gmail.com</email>
         </developer>
     </developers>
 
@@ -106,14 +106,14 @@
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.9</version>
+                <version>0.11-SNAPSHOT</version>
                 <configuration>
                     <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
                     <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
                     <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
                     <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
                     <includes><include>**/*</include></includes>
-                    <repositoryName>storm-cassandra-cql</repositoryName>      <!-- github repo name -->
+                    <repositoryName>storm-mongodb</repositoryName>      <!-- github repo name -->
                     <repositoryOwner>andressanchez</repositoryOwner>    <!-- github username  -->
                 </configuration>
                 <executions>
